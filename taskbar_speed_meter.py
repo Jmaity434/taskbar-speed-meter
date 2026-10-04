@@ -9,7 +9,7 @@ class NetworkSpeedMeter:
 
         # 1. Window size and style (fully transparent background)
         self.root.title("Speed Meter")
-        self.root.geometry("90x35+1100+980")  # Small size that fits nicely on the taskbar
+        self.root.geometry("120x45+500+400")  # Slightly wider for the new unit labels
         self.root.overrideredirect(True)  # Remove border and title bar
         self.root.wm_attributes("-topmost", True)  # Always stay on top
 
@@ -18,10 +18,10 @@ class NetworkSpeedMeter:
         self.root.configure(bg=transparent_color)
         self.root.wm_attributes("-transparentcolor", transparent_color)
 
-        # 2. Speed display text (smaller font size optimized for taskbar)
+        # 2. Speed display text (Down / UP format)
         self.label = tk.Label(
             self.root,
-            text="⬇ 0.0 K\n⬆ 0.0 K",
+            text="Down 0.0 b/s\nUP   0.0 b/s",
             font=("Segoe UI", 9, "bold"),  # Windows standard system font
             fg="#FFFFFF",  # White text for easy visibility on the taskbar
             bg=transparent_color,
@@ -29,10 +29,14 @@ class NetworkSpeedMeter:
         )
         self.label.pack(expand=True, fill="both")
 
-        # 3. Logic to drag the widget onto the taskbar with the mouse
+        # 3. Right-click context menu (Exit option)
+        self.menu = tk.Menu(self.root, tearoff=0)
+        self.menu.add_command(label="Exit", command=self.root.destroy)
+
+        # 4. Mouse event bindings
         self.label.bind("<Button-1>", self.start_drag)
         self.label.bind("<B1-Motion>", self.drag)
-        self.label.bind("<Double-Button-1>", lambda e: self.root.destroy())  # Double-click to close
+        self.label.bind("<Button-3>", self.show_menu)  # Right-click shows the menu
 
         # Reset network counters
         self.last_bytes_recv = psutil.net_io_counters().bytes_recv
@@ -42,10 +46,17 @@ class NetworkSpeedMeter:
         self.update_speed()
 
     def convert_to_speed_string(self, bytes_per_sec):
-        if bytes_per_sec >= 1024 * 1024:
-            return f"{bytes_per_sec / (1024 * 1024):.1f} M"
+        # Most speed meters show internet speed in bits per second (1 Byte = 8 bits)
+        bits_per_sec = bytes_per_sec * 8
+
+        if bits_per_sec >= 1024 * 1024 * 1024:
+            return f"{bits_per_sec / (1024 * 1024 * 1024):.1f} Gb/s"
+        elif bits_per_sec >= 1024 * 1024:
+            return f"{bits_per_sec / (1024 * 1024):.1f} Mb/s"
+        elif bits_per_sec >= 1024:
+            return f"{bits_per_sec / 1024:.1f} Kb/s"
         else:
-            return f"{bytes_per_sec / 1024:.1f} K"
+            return f"{bits_per_sec:.1f} b/s"
 
     def update_speed(self):
         current_time = time.time()
@@ -63,8 +74,8 @@ class NetworkSpeedMeter:
         dl_str = self.convert_to_speed_string(download_speed)
         ul_str = self.convert_to_speed_string(upload_speed)
 
-        # Compact text to save taskbar space
-        self.label.config(text=f"⬇ {dl_str}\n⬆ {ul_str}")
+        # Update with custom Down / UP labels and new unit format
+        self.label.config(text=f"Down {dl_str}\nUP   {ul_str}")
 
         self.last_bytes_recv = io_counters.bytes_recv
         self.last_bytes_sent = io_counters.bytes_sent
@@ -82,6 +93,10 @@ class NetworkSpeedMeter:
         x = self.root.winfo_x() + deltax
         y = self.root.winfo_y() + deltay
         self.root.geometry(f"+{x}+{y}")
+
+    def show_menu(self, event):
+        # Popup the menu at the mouse cursor position
+        self.menu.post(event.x_root, event.y_root)
 
 
 if __name__ == "__main__":

@@ -8,11 +8,12 @@ A free, open-source Python desktop utility that displays real-time download and 
 
 ## Features
 
-- Real-time download (⬇) and upload (⬆) speed
+- Real-time download (Down) and upload (UP) speed
+- Speeds shown in bits per second (b/s, Kb/s, Mb/s, Gb/s)
 - Fully transparent background (no black box)
 - Always-on-top and borderless window
 - Drag & drop positioning anywhere on the screen
-- Double-click to close
+- Right-click context menu with **Exit** option
 - Extremely lightweight (single .exe with PyInstaller)
 - Uses Windows system font (Segoe UI) for native look
 - Compact size optimized for taskbar placement
@@ -57,7 +58,7 @@ python -m PyInstaller --noconsole --onefile taskbar_speed_meter.py
 2. Double-click `taskbar_speed_meter.exe`.
 3. You will see only white speed text (no black background).
 4. Drag the text with your mouse and place it next to the ENG / Network / Speaker icons on the taskbar.
-5. Double-click the text anytime to close the meter.
+5. Right-click the text and choose **Exit** to close the meter (or double-click).
 
 ---
 
@@ -74,8 +75,9 @@ python taskbar_speed_meter.py
 1. The window is made completely transparent using the Windows `transparentcolor` attribute.
 2. Only the white speed text remains visible.
 3. Mouse drag events allow free repositioning.
-4. `psutil` reads network I/O counters every second and calculates current speed.
-5. Speeds are shown in KB/s or MB/s automatically.
+4. Right-click opens a context menu with Exit.
+5. `psutil` reads network I/O counters every second and calculates current speed in **bits per second**.
+6. Speeds are shown as b/s, Kb/s, Mb/s or Gb/s automatically.
 
 ---
 
@@ -95,7 +97,7 @@ taskbar-speed-meter/
 
 | What you want to change          | Where to edit                          |
 |----------------------------------|----------------------------------------|
-| Window size                      | `self.root.geometry("90x35+...")`      |
+| Window size                      | `self.root.geometry("120x45+...")`     |
 | Text color                       | `fg="#FFFFFF"` in the Label            |
 | Font size / family               | `font=("Segoe UI", 9, "bold")`         |
 | Update interval                  | `self.root.after(1000, ...)` (ms)      |
@@ -151,7 +153,7 @@ MIT License – free for personal and commercial use.
 
 ## Keywords (SEO)
 
-Windows taskbar network speed meter, real-time download upload monitor, transparent desktop widget, Python psutil tkinter, lightweight system tray alternative, free open source network monitor, Windows 10 11 taskbar gadget, drag and drop speed overlay.
+Windows taskbar network speed meter, real-time download upload monitor, transparent desktop widget, Python psutil tkinter, lightweight system tray alternative, free open source network monitor, Windows 10 11 taskbar gadget, drag and drop speed overlay, bits per second speed meter.
 
 ---
 
