@@ -104,6 +104,32 @@ taskbar-speed-meter/
 
 ---
 
+## Auto-Start with Windows (Run at Startup)
+
+Follow these 3 simple steps so the speed meter launches automatically every time Windows starts:
+
+### Step 1: Open the Windows Startup folder
+1. Press **Windows Key + R** on your keyboard. The Run dialog will appear.
+2. Type exactly: `shell:startup`
+3. Press **Enter** or click **OK**.
+
+A special folder will open. Anything placed inside this folder will start automatically when Windows boots.
+
+### Step 2: Create a shortcut of the speed meter
+1. Go to the `dist` folder on your desktop (where `taskbar_speed_meter.exe` is located).
+2. Right-click on `taskbar_speed_meter.exe`.
+3. Click **Show more options** → **Create shortcut**.
+
+A new file named `taskbar_speed_meter.exe - Shortcut` will appear in the same folder.
+
+### Step 3: Move the shortcut to the Startup folder
+1. Cut or Copy the newly created shortcut.
+2. Paste it into the Startup folder you opened in Step 1.
+
+Done! From now on, whenever you turn on or restart your computer, Windows will automatically run your custom speed meter in the background and it will appear on the taskbar.
+
+---
+
 ## Troubleshooting
 
 - **Black box still appears**  
@@ -114,10 +140,6 @@ taskbar-speed-meter/
 
 - **Widget disappears behind other windows**  
   The `-topmost` attribute is already enabled. Restart the app.
-
-- **Want it to start with Windows**  
-  Create a shortcut of the `.exe` and place it in the Startup folder  
-  (`shell:startup`).
 
 ---
 
